@@ -1,0 +1,73 @@
+{
+	"name" : "capital",
+	"children" : [
+		{
+			"name" : "삼성",
+			"value" : 399479,
+			"children" : [
+				{"name" : "삼성화재", "value" : 300000},
+				{"name" : "삼성화재", "value" : 10000},
+				{"name" : "삼성화재", "value" : 50000},
+				{"name" : "삼성화재", "value" : 40000},
+				{"name" : "삼성화재", "value" : 30000},
+				{"name" : "삼성화재", "value" : 20000}
+			]
+		},
+		{
+			"name" : "현대자동차",
+			"value" : 222654,
+			"children" : [
+				{"name" : "현대모비스", "value" : 200000}
+			]
+		},
+		{
+			"name" : "SK",
+			"value" : 189531,
+			"children" : [
+				{"name" : "SK C&C", "value" : 180000}
+			]
+		},
+		{
+			"name" : "LG",
+			"value" : 123135,
+			"children" : [
+				{"name" : "LG CNS", "value" : 90000}
+			]
+		},
+		{
+			"name" : "롯데",
+			"value" : 116239,
+			"children" : [
+				{"name" : "롯데 백화점", "value" : 60000}
+			]
+		},
+		{
+			"name" : "포스코",
+			"value" : 79709,
+			"children" : [
+				{"name" : "포스코ICT", "value" : 30000}
+			]
+		},
+		{
+			"name" : "GS",
+			"value" : 65036,
+			"children" : [
+				{"name" : "GS 홈쇼핑", "value" : 10000}
+			]
+		},
+		{
+			"name" : "한화",
+			"value" : 61319,
+			"children" : [
+				{"name" : "한화 테크윈", "value" : 30000}
+			]
+		},
+		{
+			"name" : "농협",
+			"value" :  58089,
+			"children" : [
+				{"name" : "농협 은행", "value" : 20000}
+			]
+		}
+	]
+}
