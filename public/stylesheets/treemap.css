@@ -23,11 +23,29 @@ nav .up {
   color: white;
   width: 92px;
   padding: 8px;
+  text-align: center;
   background-color: rgba(230, 26, 60, 0.8);
   float: left;
   cursor: pointer;
 }
+
 nav .up:hover {
+  background-color: rgba(184, 20, 48, 0.8);
+}
+
+nav .detail {
+  font: bold 14px/1 sans-serif;
+  color: white;
+  text-align: center;
+  width: 92px;
+  padding: 8px;
+  background-color: rgba(230, 26, 60, 0.8);
+  margin-right: 5%;
+  float: right;
+  cursor: pointer;
+}
+
+nav .detail:hover {
   background-color: rgba(184, 20, 48, 0.8);
 }
 

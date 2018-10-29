@@ -7,7 +7,6 @@ let color = d3.scaleOrdinal()
 		        .range(d3.schemeDark2
 			        .map(function(c) { 
 				        c = d3.rgb(c); 
-				        //c.opacity = 0.5; 
 				        return c; 
 			        })
                 );
@@ -22,7 +21,7 @@ try {
     (async function(){
         const data = await d3.json("data/capital.json");
         const nodes = d3.hierarchy(data)
-		                .sum(function(d) { return d.value ? 1 : 0})
+		                .sum(function(d) { return d.value})
 		                .sort(function(a, b) { return b.height - a.height || b.value - a.value });
 	
         let	currentDepth;
@@ -42,15 +41,12 @@ try {
             .style("top", function(d) { return y(d.y0) + "%"; })
             .style("width", function(d) { return x(d.x1) - x(d.x0) + "%"; })
             .style("height", function(d) { return y(d.y1) - y(d.y0) + "%"; })
-            //.style("background-image", function(d) { return d.value ? imgUrl + d.value : ""; })
-            //.style("background-image", function(d) { return d.value ? "url(http://placekitten.com/g/300/300)" : "none"; }) 
             .style("background-color", function(d) { while (d.depth > 2) d = d.parent; return color(d.data.name); })
             .on("click", zoom)
             .append("p")
             .attr("class", "label")
-            .text(function(d) { return d.data.name ? d.data.name : "---"; });
-            //.style("font-size", "")
-            //.style("opacity", function(d) { return isOverflowed( d.parent ) ? 1 : 0; });
+            .text(function(d) { return d.data.name ? `${d.data.name} \n ${Math.round(d.value/1000)} 십억` : "---"; })
+            .style("font-size", d => (y(d.y1) - y(d.y0))  +"px");
 
             var parent = d3.select(".up")
                             .datum(nodes)
