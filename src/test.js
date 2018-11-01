@@ -1,19 +1,19 @@
 const width = height = 100; // % of the parent element
-	
+    
 let x = d3.scaleLinear().domain([0, width]).range([0, width]);
 let y = d3.scaleLinear().domain([0, height]).range([0, height]);
-	
+    
 let color = d3.scaleOrdinal()
-		        .range(d3.schemeDark2
-			        .map(function(c) { 
-				        c = d3.rgb(c); 
-				        return c; 
-			        })
+                .range(d3.schemeDark2
+                    .map((c)=> { 
+                        c = d3.rgb(c); 
+                        return c; 
+                    })
                 );
 
 const treemap = d3.treemap()
-    	.size([width, height])
-		//.tile(d3.treemapResquarify) // doesn't work - height & width is 100%
+        .size([width, height])
+        //.tile(d3.treemapResquarify) // doesn't work - height & width is 100%
         .paddingInner(0)
         .round(true); //true
         
@@ -21,10 +21,10 @@ try {
     (async function(){
         const data = await d3.json("data/capital.json");
         const nodes = d3.hierarchy(data)
-		                .sum(function(d) { return d.value})
-		                .sort(function(a, b) { return b.height - a.height || b.value - a.value });
-	
-        let	currentDepth;
+                        .sum(d =>  d.value)
+                        .sort((a, b)=>  b.height - a.height || b.value - a.value );
+    
+        let currentDepth;
         treemap(nodes);
 
         var chart = d3.select("#chart");
@@ -33,24 +33,24 @@ try {
             .data(nodes.descendants())
             .enter()
             .append("div")
-            .attr("class", function(d) { return "node level-" + d.depth; })
-            .attr("title", function(d) { return d.data.name ? d.data.name : "null"; });
+            .attr("class", d =>  "node level-" + d.depth)
+            .attr("title", d =>  d.data.name ? d.data.name : "null");
 
         cells
-            .style("left", function(d) { return x(d.x0) + "%"; })
-            .style("top", function(d) { return y(d.y0) + "%"; })
-            .style("width", function(d) { return x(d.x1) - x(d.x0) + "%"; })
-            .style("height", function(d) { return y(d.y1) - y(d.y0) + "%"; })
-            .style("background-color", function(d) { while (d.depth > 2) d = d.parent; return color(d.data.name); })
+            .style("left", d =>  x(d.x0) + "%")
+            .style("top", d =>  y(d.y0) + "%")
+            .style("width", d =>  x(d.x1) - x(d.x0) + "%")
+            .style("height", d =>  y(d.y1) - y(d.y0) + "%")
+            .style("background-color", d => { while (d.depth > 2) d = d.parent; return color(d.data.name)})
             .on("click", zoom)
             .append("p")
             .attr("class", "label")
-            .text(function(d) { return d.data.name ? `${d.data.name} \n ${Math.round(d.value/1000)} 십억` : "---"; })
+            .text(d =>  d.data.name ? `${d.data.name} \n ${Math.round(d.value/1000)} 십억` : "---")
             .style("font-size", d => (y(d.y1) - y(d.y0))  +"px");
 
-            var parent = d3.select(".up")
-                            .datum(nodes)
-                            .on("click", zoom);
+        var parent = d3.select(".up")
+                        .datum(nodes)
+                        .on("click", zoom);
             
         function zoom(d) { // http://jsfiddle.net/ramnathv/amszcymq/
             console.log('clicked: ' + d.data.name + ', depth: ' + d.depth);
@@ -67,17 +67,17 @@ try {
             
             cells
                 .transition(t)
-                .style("left", function(d) { return x(d.x0) + "%"; })
-                .style("top", function(d) { return y(d.y0) + "%"; })
-                .style("width", function(d) { return x(d.x1) - x(d.x0) + "%"; })
-                .style("height", function(d) { return y(d.y1) - y(d.y0) + "%"; });
+                .style("left", d => x(d.x0) + "%")
+                .style("top", d =>  y(d.y0) + "%")
+                .style("width", d =>  x(d.x1) - x(d.x0) + "%")
+                .style("height", d =>  y(d.y1) - y(d.y0) + "%");
             
             cells // hide this depth and above
-                .filter(function(d) { return d.ancestors(); })
-                .classed("hide", function(d) { return d.children ? true : false });
+                .filter(d =>  d.ancestors())
+                .classed("hide", d =>  d.children ? true : false );
             
             cells // show this depth + 1 and below
-                .filter(function(d) { return d.depth > currentDepth; })
+                .filter(d =>  d.depth > currentDepth)
                 .classed("hide", false);
         };    
     })();
