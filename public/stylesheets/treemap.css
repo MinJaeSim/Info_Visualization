@@ -79,6 +79,10 @@ nav .detail:hover {
   transition: color 0.4s, opacity 0.8s, -webkit-filter 0.8s;
   transition: color 0.4s, opacity 0.8s, filter 0.8s;
   transition: color 0.4s, opacity 0.8s, filter 0.8s, -webkit-filter 0.8s;
+
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+  white-space: nowrap;  
 }
 .node.hide {
   opacity: 0;
