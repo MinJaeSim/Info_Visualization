@@ -96,7 +96,8 @@ try {
             .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
             .text(d => name[d.index]);
 
-        group.on("mouseover", fade(.1));
+        group.on("mouseover", fade(.1))
+            .on("mouseout", fade(1));
         
         const groupTick = group.selectAll(".group-tick")
             .data(function(d) { return groupTicks(d, 20); })
@@ -110,6 +111,10 @@ try {
         groupTick
             .filter(function(d) { return d.value; })
             .append("text")
+
+            // .on("mouseover",fade(0.1))
+            // .on("mouseout", fade(1))
+
             .attr("x", 6)
             .attr("dy", ".35em")
             .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180) translate(-12)" : null; })
@@ -121,6 +126,10 @@ try {
             .selectAll("path")
             .data(function(chords) { return chords; })
             .enter().append("path")
+            
+            // .on("mouseover",fade(0.1))
+            // .on("mouseout", fade(1))
+
             .attr("d", ribbon)
             .style("fill", function(d) { return color(d.target.index); })
             .style("stroke", function(d) { return d3.rgb(color(d.target.index)).darker(); });
@@ -143,9 +152,8 @@ try {
           }
 
         function fade(opacity) {
-            console.log(fade);
             return function(g, i) {
-                svg.selectAll(".path")
+                svg.selectAll(".ribbons path")
                     .filter(function(d) { return d.source.index != i && d.target.index != i; })
                     .transition()
                     .style("opacity", opacity);
