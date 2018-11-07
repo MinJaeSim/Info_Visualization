@@ -74,7 +74,7 @@ try {
             y.domain([d.y0, d.y1]);
             
             const t = d3.transition()
-                .duration(800)
+                .duration(200)
                 .ease(d3.easeCubicOut);
             
             cells

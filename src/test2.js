@@ -44,7 +44,7 @@ try {
         
         d3.select("#chart")
             .append("svg:svg")    
-            .attr("width", width+"px")
+            .attr("width", "100%")
             .attr("height", height+"px")
             .attr("float", "left");
 
@@ -95,6 +95,8 @@ try {
             `)
             .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
             .text(d => name[d.index]);
+
+        group.on("mouseover", fade(.1));
         
         const groupTick = group.selectAll(".group-tick")
             .data(function(d) { return groupTicks(d, 20); })
@@ -139,6 +141,17 @@ try {
                 return {value: value, angle: value * k + d.startAngle};
             });
           }
+
+        function fade(opacity) {
+            console.log(fade);
+            return function(g, i) {
+                svg.selectAll(".path")
+                    .filter(function(d) { return d.source.index != i && d.target.index != i; })
+                    .transition()
+                    .style("opacity", opacity);
+            };
+        }
+
     })();
 }catch(e) {
     console.log(e);

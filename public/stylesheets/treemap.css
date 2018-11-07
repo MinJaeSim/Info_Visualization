@@ -65,6 +65,7 @@ nav .detail:hover {
   transition: opacity 0.8s;
   cursor: pointer;
 }
+
 .node .label {
   display: inline;
   font-family: sans-serif;
