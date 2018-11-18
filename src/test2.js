@@ -8,6 +8,11 @@ try {
             return;
         }
 
+        if(!d3.select("#chart").select(".sub").empty()) {
+            d3.select("#chart").select(".sub").classed("hide",false);
+            return;
+        }
+
         const data = await d3.tsv("data/chord.tsv");
 
         const matrix = [];
@@ -17,11 +22,12 @@ try {
         for(i = 0; i < data.length - 1; i++) 
             matrix.push([]);
 
-        for(i = 0; i < data.length - 1; i++) {
-            for(j = 1; j < data.length;j++)
+        for(i = 0; i < data.length - 1; i++) 
+            for(j = 1; j < data.length;j++) {
                 matrix[j-1][i] = parseFloat(data[i][j]);
+                matrix[i][j-1] += parseFloat(data[i][j]);
                 // matrix[i][j-1] = parseFloat(data[i][j]);
-        }
+            }
 
         for(i = data.length - 1, j = 1; j < data.length; j++)
             name.push(data[i][j])
@@ -36,7 +42,7 @@ try {
         // }
 
         for(i = 0; i < name.length; i++) 
-            colorRange.push(d3.interpolateSpectral(i/name.length));
+            colorRange.push(d3.interpolateRainbow(i/name.length));
     
         const margin = {top: 30, right: 20, bottom: 30, left: 50},
             width = 1080 - margin.left - margin.right,
@@ -44,9 +50,16 @@ try {
         
         d3.select("#chart")
             .append("svg:svg")    
-            .attr("width", "100%")
-            .attr("height", height+"px")
+            .attr("width", "70%")
+            .attr("height", height + "px")
             .attr("float", "left");
+
+        d3.select("#chart")
+            .append("svg:svg")
+            .attr("class","sub")
+            .attr("width", "25%")
+            .attr("height", (height-50) + "px")
+            .attr("float", "right");
 
         const svg = d3.select("svg"),
             outerRadius = Math.min(width, height) * 0.45 - 80,
@@ -67,7 +80,7 @@ try {
                         .radius(innerRadius);
           
         const color = d3.scaleOrdinal()
-                    .domain(d3.range(matrix[0].length))
+                    .domain(d3.range(matrix.length))
                     .range(colorRange);
 
         const g = svg.append("g")
@@ -77,12 +90,12 @@ try {
         const group = g.append("g")
                     .attr("class", "groups")
                     .selectAll("g")
-                    .data(chords => chords.groups)
+                    .data(chords => {console.log(chords.groups); return chords.groups;})
                     .enter().append("g");
           
         group.append("path")
-            .style("fill", function(d) { return color(d.index); })
-            .style("stroke", function(d) { return d3.rgb(color(d.index)).darker(); })
+            .style("fill", d => color(d.index) )
+            .style("stroke", d => d3.rgb(color(d.index)).darker())
             .attr("d", arc);
         
         group.append("svg:text")
@@ -100,10 +113,10 @@ try {
             .on("mouseout", fade(1));
         
         const groupTick = group.selectAll(".group-tick")
-            .data(function(d) { return groupTicks(d, 20); })
+            .data(d => groupTicks(d, 20))
             .enter().append("g")
             .attr("class", "group-tick")
-            .attr("transform", function(d) { return "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)"; });
+            .attr("transform", d => "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)");
           
         groupTick.append("line")
                 .attr("x2", 6);
@@ -111,10 +124,6 @@ try {
         groupTick
             .filter(function(d) { return d.value; })
             .append("text")
-
-            // .on("mouseover",fade(0.1))
-            // .on("mouseout", fade(1))
-
             .attr("x", 6)
             .attr("dy", ".35em")
             .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180) translate(-12)" : null; })
@@ -137,7 +146,7 @@ try {
         $('.up').click(() => {
             d3.select("svg").classed("hide",true)
         });
-          // Returns an array of tick angles and values for a given group and step.
+        
         function groupTicks(d, step) {
             let k;
             if (d.value == 0) {
@@ -145,13 +154,13 @@ try {
             } else {
                 k = (d.endAngle - d.startAngle) / d.value;
             }
-
             return d3.range(0, d.value, step).map(function(value) {
                 return {value: value, angle: value * k + d.startAngle};
             });
           }
 
         function fade(opacity) {
+
             return function(g, i) {
                 svg.selectAll(".ribbons path")
                     .filter(function(d) { return d.source.index != i && d.target.index != i; })

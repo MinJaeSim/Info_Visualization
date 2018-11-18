@@ -9,6 +9,9 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
+  
+  position: fixed;
+  overflow: hidden;
 }
 
 nav {
@@ -64,6 +67,7 @@ nav .detail:hover {
   opacity: 0.8;
   transition: opacity 0.8s;
   cursor: pointer;
+  border : solid 1px rgba(255,255,255,0.4)
 }
 
 .node .label {
@@ -80,9 +84,10 @@ nav .detail:hover {
   transition: color 0.4s, opacity 0.8s, -webkit-filter 0.8s;
   transition: color 0.4s, opacity 0.8s, filter 0.8s;
   transition: color 0.4s, opacity 0.8s, filter 0.8s, -webkit-filter 0.8s;
-
+  width: 100%;
+  text-align: center;
   overflow: hidden;  
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
   white-space: nowrap;  
 }
 .node.hide {
