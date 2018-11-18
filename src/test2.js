@@ -8,10 +8,10 @@ try {
             return;
         }
 
-        if(!d3.select("#chart").select(".sub").empty()) {
-            d3.select("#chart").select(".sub").classed("hide",false);
-            return;
-        }
+        // if(!d3.select("#chart").select(".sub").empty()) {
+        //     d3.select("#chart").select(".sub").classed("hide",false);
+        //     return;
+        // }
 
         const data = await d3.tsv("data/chord.tsv");
 
@@ -23,7 +23,7 @@ try {
             matrix.push([]);
 
         for(i = 0; i < data.length - 1; i++) 
-            for(j = 1; j < data.length;j++) {
+            for(j = 1; j < data.length; j++) {
                 matrix[j-1][i] = parseFloat(data[i][j]);
                 matrix[i][j-1] += parseFloat(data[i][j]);
                 // matrix[i][j-1] = parseFloat(data[i][j]);
@@ -45,7 +45,7 @@ try {
             colorRange.push(d3.interpolateRainbow(i/name.length));
     
         const margin = {top: 30, right: 20, bottom: 30, left: 50},
-            width = 1080 - margin.left - margin.right,
+            width = 1024 - margin.left - margin.right,
             height = 960 - margin.top - margin.bottom;
         
         d3.select("#chart")
@@ -55,11 +55,8 @@ try {
             .attr("float", "left");
 
         d3.select("#chart")
-            .append("svg:svg")
-            .attr("class","sub")
-            .attr("width", "25%")
-            .attr("height", (height-50) + "px")
-            .attr("float", "right");
+            .append("div")
+            .attr("class","sub");
 
         const svg = d3.select("svg"),
             outerRadius = Math.min(width, height) * 0.45 - 80,
@@ -90,7 +87,7 @@ try {
         const group = g.append("g")
                     .attr("class", "groups")
                     .selectAll("g")
-                    .data(chords => {console.log(chords.groups); return chords.groups;})
+                    .data(chords => chords.groups)
                     .enter().append("g");
           
         group.append("path")
@@ -122,27 +119,23 @@ try {
                 .attr("x2", 6);
           
         groupTick
-            .filter(function(d) { return d.value; })
+            .filter(d => d.value)
             .append("text")
             .attr("x", 6)
             .attr("dy", ".35em")
-            .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180) translate(-12)" : null; })
-            .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-            .text(function(d) { return formatValue(d.value) + "%"; });
+            .attr("transform", d => d.angle > Math.PI ? "rotate(180) translate(-12)" : null)
+            .style("text-anchor", d => d.angle > Math.PI ? "end" : null)
+            .text(d => formatValue(d.value) + "%");
           
         g.append("g")
             .attr("class", "ribbons")
             .selectAll("path")
-            .data(function(chords) { return chords; })
+            .data(chords => chords)
             .enter().append("path")
-            
-            // .on("mouseover",fade(0.1))
-            // .on("mouseout", fade(1))
-
             .attr("d", ribbon)
-            .style("fill", function(d) { return color(d.target.index); })
-            .style("stroke", function(d) { return d3.rgb(color(d.target.index)).darker(); });
-        
+            .style("fill", d => color(d.target.index))
+            .style("stroke", d => d3.rgb(color(d.target.index)).darker());
+
         $('.up').click(() => {
             d3.select("svg").classed("hide",true)
         });
@@ -160,10 +153,9 @@ try {
           }
 
         function fade(opacity) {
-
             return function(g, i) {
                 svg.selectAll(".ribbons path")
-                    .filter(function(d) { return d.source.index != i && d.target.index != i; })
+                    .filter(d => d.source.index != i && d.target.index != i)
                     .transition()
                     .style("opacity", opacity);
             };
