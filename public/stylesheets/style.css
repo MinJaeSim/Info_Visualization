@@ -4,6 +4,11 @@ body {
 
   min-width: 1460px;
   min-height: 940px;
+
+  /* max-width: 2000px; */
+  
+  position: fixed;
+  overflow: hidden;
 }
 
 a {
@@ -14,3 +19,13 @@ a {
   display: inline-block;
   width: 100%;
 }
+
+/* @media (max-width: 1459px) {
+  body {
+    width: 70%;
+    height: 70%;
+
+    position: relative;
+    overflow: auto;
+  }
+} */

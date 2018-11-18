@@ -59,7 +59,7 @@ try {
             .attr("class","sub");
 
         const svg = d3.select("svg"),
-            outerRadius = Math.min(width, height) * 0.45 - 80,
+            outerRadius = Math.min(width, height) * 0.45,
             innerRadius = outerRadius - 10;
           
         const formatValue = d3.format("");
