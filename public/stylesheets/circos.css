@@ -15,10 +15,10 @@ body {
 }
 
 .sub {
-  width: 25%;
-  height: 850px;
+  width: 250px;
+  height: 800px;
   border : solid 1px #999999;
   float: right;
-  margin: 50px 70px 80px 0px;
+  margin: 50px 100px 80px 0px;
 }
   

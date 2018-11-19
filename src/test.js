@@ -18,6 +18,15 @@ const treemap = d3.treemap()
         .round(true); //true
 
 let company;
+let samsung = d3.rgb(20,40,160),
+    hyundai = d3.rgb(0,44,95),
+    sk = d3.rgb(234,0,44),
+    lotte = d3.rgb(218,41,28),
+    lg = d3.rgb(165,0,52),
+    posco = d3.rgb(0,87,136), 
+    nh = d3.rgb(0,178,95), 
+    hanwha = d3.rgb(243,115,33), 
+    gs = d3.rgb(0,169,157);
         
 try {
     (async function(){
@@ -43,7 +52,10 @@ try {
             .style("top", d =>  y(d.y0) + "%")
             .style("width", d =>  x(d.x1) - x(d.x0) + "%")
             .style("height", d =>  y(d.y1) - y(d.y0) + "%")
-            .style("background-color", d => { while (d.depth > 2) d = d.parent; return color(d.data.name)})
+            .style("background-color", d => { 
+                                                if(d.depth == 2)  return getColor(d.parent.data.name); 
+                                                else return getColor(d.data.name); 
+                                                return color(d.data.name)})
             .on("click", zoom)
             .append("p")
             .attr("class", "label")
@@ -53,6 +65,9 @@ try {
             .style("text-overflow","ellipsis")
             .style("white-space","nowrap");  
 
+        d3.select(".up").classed("hide",true);
+        d3.select(".detail").classed("hide",true);
+
         let parent = d3.select(".up")
                         .datum(nodes)
                         .on("click", zoom);
@@ -61,9 +76,13 @@ try {
             console.log('clicked: ' + d.data.name + ', depth: ' + d.depth);
             if(d.depth == 0) {
                 company = null;
+                d3.select(".up").classed("hide",true);
+                d3.select(".detail").classed("hide",true);
             }
 
             if(d.depth == 1) {
+                d3.select(".up").classed("hide",false);
+                d3.select(".detail").classed("hide",false);
                 company = d.data.name;
             }
             
@@ -95,6 +114,52 @@ try {
                 .filter(d =>  d.depth > currentDepth)
                 .classed("hide", false);
         };
+
+        function getColor (p) {
+    // nh = d3.rgb(0,178,95), 
+    // hanwha = d3.rgb(243,115,33), 
+    // gs = d3.rgb(0,169,157);
+            switch(p) {
+                case "삼성" :
+                    samsung.r -= 0.2;
+                    samsung.g -= 0.5;
+                    samsung.b -= 2;
+                    return samsung;
+                case "현대자동차" :
+                    hyundai.g -= 0.2;
+                    hyundai.b -= 0.5;
+                    return hyundai;
+                case "SK" :
+                    sk.r -= 1;
+                    return sk;
+                case "롯데" :
+                    lotte.r -= 1;
+                    lotte.g -= 0.2;
+                    lotte.b -= 0.1;
+                    return lotte;
+                case "LG" :
+                    lg.r -= 1;
+                    lg.b -= 0.2;
+                    return lg;
+                case "포스코" :
+                    posco.g -= 0.2;
+                    posco.b -= 1;
+                    return posco;
+                case "농협" :
+                    nh.g -= 1;
+                    nh.b -= 0.2;
+                    return nh;
+                case "한화" :
+                    hanwha.r -= 1;
+                    hanwha.g -= 0.5;
+                    hanwha.b -= 0.1;
+                    return hanwha;
+                case "GS" :
+                    gs.g -= 1;
+                    gs.b -=1;
+                    return gs;
+            } 
+        }
     })();
 } catch(e) {
     console.log(e);
@@ -102,5 +167,19 @@ try {
 
 $('.detail').click(() => {
     if(company != null)
-        detail(company);
+        switch (company) {
+            case "삼성" :
+                detail(company);
+                break;
+            case "현대자동차" :
+                detail(company);
+                break;
+            case "SK" : 
+                detail(company);
+                break;
+            default :
+                alert("업데이트 예정입니다.")
+                break;
+        }
+    
 });

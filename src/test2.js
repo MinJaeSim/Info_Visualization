@@ -50,7 +50,7 @@ try {
         
         d3.select("#chart")
             .append("svg:svg")    
-            .attr("width", "70%")
+            .attr("width", width + "px")
             .attr("height", height + "px")
             .attr("float", "left");
 
@@ -59,7 +59,7 @@ try {
             .attr("class","sub");
 
         const svg = d3.select("svg"),
-            outerRadius = Math.min(width, height) * 0.45,
+            outerRadius = Math.min(width, height) * 0.45 - 80,
             innerRadius = outerRadius - 10;
           
         const formatValue = d3.format("");
