@@ -2,7 +2,7 @@ body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 
-  min-width: 1284px;
+  min-width: 1200px;
   min-height: 900px;
 
   /* max-width: 2000px; */
@@ -16,7 +16,7 @@ a {
 }
 
 #chart {
-  display: inline-block;
+  display: inline-flex;
   width: 100%;
 }
 
