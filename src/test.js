@@ -32,7 +32,7 @@ try {
     (async function(){
         const data = await d3.json("data/capital.json");
         const nodes = d3.hierarchy(data)
-                        .sum(d =>  d.value)
+                        .sum(d => {if(d.value < 0) d.value *= -1; return d.value;})
                         .sort((a, b)=>  b.height - a.height || b.value - a.value );
     
         let currentDepth;
