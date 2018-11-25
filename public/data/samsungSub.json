@@ -1,0 +1,238 @@
+{
+    "name": "삼성",
+    "children": [
+      {
+        "name": "제일 기획",
+        "children": [
+          {
+            "name": "삼성 라이온즈",
+            "value": 67.5
+          },
+          {
+            "name": "수원 삼성 축구단",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 물산",
+        "children": [
+          {
+            "name": "서울 레이크 사이드",
+            "value": 100
+          },
+          { 
+            "name": "삼우 종합건축 사무소",
+            "value": 100
+          },
+          {
+            "name": "제일패션 리테일",
+            "value": 100
+          },
+          {
+            "name": "네추럴 나인",
+            "value": 51
+          },
+          {
+            "name": "삼성 웰스토리",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 전자",
+        "children": [
+          {
+            "name": "스테코",
+            "value": 70
+          },
+          {
+            "name": "삼성 전자 서비스",
+            "value": 99.33
+          },
+          {
+            "name": "삼성 전자 판매",
+            "value": 100
+          },
+          {
+            "name": "삼성 전자 로지텍",
+            "value": 100
+          },
+          {
+            "name": "삼성 메디슨",
+            "value": 68.45
+          }
+        ]
+      },
+      {
+        "name": "삼성 디스플레이",
+        "children": [
+          {
+            "name": "삼성코닝 어드밴스드 글라스",
+            "value": 50
+          },
+          {
+            "name": "에스유머티리얼스",
+            "value": 50
+          }
+        ]
+      },
+      {
+        "name": "삼성 바이오 로직스",
+        "children": [
+          {
+            "name": "삼성 바이오 에피스",
+            "value": 94.61
+          }
+        ]
+      },
+      {
+        "name": "삼성 생명 보험",
+        "children": [
+          {
+            "name": "생보 부동산 신탁",
+            "value": 50
+          },
+          {
+            "name": "삼성생명 서비스 손해 사정",
+            "value": 99.78
+          },
+          {
+            "name": "삼성 에스알에이 자산 운용",
+            "value": 100
+          },
+          {
+            "name": "삼성생명 금융서비스 보험대리점",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성화재 해상보험",
+        "children": [
+          {
+            "name": "삼성화재 애니카 손해 사정",
+            "value": 100
+          },
+          {
+            "name": "삼성화재 서비스 손해 사정",
+            "value": 100
+          },
+          {
+            "name": "삼성화재 금융서비스 보험대리점",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 SDI",
+        "children": [
+          {
+            "name": "에스디플렉스",
+            "value": 50
+          },
+          {
+            "name": "에스 티엠",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 중공업",
+        "children": [
+          {
+            "name": "대정해상 풍력발전",
+            "value": 50.1
+          }
+        ]
+      },
+      {
+        "name": "에스원",
+        "children": [
+          {
+            "name": "휴먼티에스 에스",
+            "value": 100
+          },
+          {
+            "name": "에스원 씨알엠",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성SDS",
+        "children": [
+          {
+            "name": "오픈핸즈",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "호텔신라",
+        "children": [
+          {
+            "name": "신라 스테이",
+            "value": 100
+          },
+          {
+            "name": "HDC 신라 면세점",
+            "value": 50
+          },
+          {
+            "name": "에스비티 엠",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 카드",
+        "children": [
+          {
+            "name": "삼성카드 고객서비스",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 증권",
+        "children": [
+          {
+            "name": "삼성 선물",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "삼성 자산 운용",
+        "children": [
+          {
+            "name": "삼성액티브 자산운용",
+            "value": 100
+          },
+          {
+            "name": "삼성헤지 자산운용",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "Harman International Industries. Inc.",
+        "children": [
+          {
+            "name": "하만  인터내셔널  코리아",
+            "value": 100
+          }
+        ]
+      },
+      {
+        "name": "Red Bend Software Ltd.",
+        "children": [
+          {
+            "name": "레드벤드  소프트웨어  코리아",
+            "value": 100
+          }
+        ]
+      }
+    ]
+  }

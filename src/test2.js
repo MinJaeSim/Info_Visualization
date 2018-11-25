@@ -14,33 +14,39 @@ try {
         //     return;
         // }
 
-        const data = await d3.tsv("data/samsungCircos.tsv");
+        const chordData = await d3.tsv("data/samsungCircos.tsv");
+        const subData = await d3.json("data/samsungSub.json");
 
         const tsvMatrix = [];
         const chordMatrix = [];
         const companyName = [];
         const colorRange =[];
+        const subCompany = [];
         
-        for(i = 0; i < data.length - 1; i++) {
+        for(i = 0; i < subData.children.length; i++) {
+            subCompany.push(subData.children[i]);
+        }
+
+        for(i = 0; i < chordData.length - 1; i++) {
             chordMatrix.push([]);
             tsvMatrix.push([]);
         }
 
-        for(i = 0; i < data.length - 1; i++) 
-            for(j = 1; j < data.length; j++) 
+        for(i = 0; i < chordData.length - 1; i++) 
+            for(j = 1; j < chordData.length; j++) 
                 chordMatrix[j-1][i] = 0;
         
-        for(i = 0; i < data.length - 1; i++) 
-            for(j = 1; j < data.length; j++) {
-                tsvMatrix[i][j-1] = parseFloat(data[i][j]);
-                chordMatrix[i][j-1] += parseFloat(data[i][j]);
+        for(i = 0; i < chordData.length - 1; i++) 
+            for(j = 1; j < chordData.length; j++) {
+                tsvMatrix[i][j-1] = parseFloat(chordData[i][j]);
+                chordMatrix[i][j-1] += parseFloat(chordData[i][j]);
                 if(j-1 == i) 
                     continue;
-                chordMatrix[j-1][i] += parseFloat(data[i][j]);
+                chordMatrix[j-1][i] += parseFloat(chordData[i][j]);
             }
 
-        for(i = data.length - 1, j = 1; j < data.length; j++)
-            companyName.push(data[i][j])
+        for(i = chordData.length - 1, j = 1; j < chordData.length; j++)
+            companyName.push(chordData[i][j])
 
         for(i = 0; i < companyName.length; i++) 
             colorRange.push(d3.interpolateRainbow(i/companyName.length));
@@ -223,6 +229,22 @@ try {
                             .append("div")
                             .attr("class","sub_sum")
                             .text(`총 합 : ${Math.round(hadppSum)}%`);
+                    
+                    for(j = 0; j < subCompany.length; j++)
+                        if(companyName[i] == subCompany[j].name) {
+                            d3.select(".sub")
+                                .append("div")
+                                .attr("class","sub_title")
+                                .text(`${companyName[i]}만 지분을 가지고 있는 계열사`);
+                            for(k = 0; k < subCompany[j].children.length; k++) {
+                                d3.select(".sub")
+                                    .append("div")
+                                    .attr("class","sub_text onlyhave")
+                                    .text(`${subCompany[j].children[k].name} : ${subCompany[j].children[k].value}%`)
+                            }
+                            break;
+                        }
+                            
                 }
                 
                 svg.selectAll(".ribbons path")
