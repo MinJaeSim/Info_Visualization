@@ -1,19 +1,10 @@
-const width = height = 100; // % of the parent element
+const width = height = 100;
     
 let x = d3.scaleLinear().domain([0, width]).range([0, width]);
 let y = d3.scaleLinear().domain([0, height]).range([0, height]);
     
-// let color = d3.scaleOrdinal()
-//                 .range(d3.schemeDark2
-//                     .map((c)=> { 
-//                         c = d3.rgb(c); 
-//                         return c; 
-//                     })
-//                 );
-
 const treemap = d3.treemap()
         .size([width, height])
-        //.tile(d3.treemapResquarify) // doesn't work - height & width is 100%
         .paddingInner(0)
         .round(true); //true
 
@@ -70,7 +61,7 @@ try {
                         .datum(nodes)
                         .on("click", zoom);
             
-        function zoom(d) { // http://jsfiddle.net/ramnathv/amszcymq/
+        function zoom(d) {
             console.log('clicked: ' + d.data.name + ', depth: ' + d.depth);
             if(d.depth == 0) {
                 company = null;
