@@ -3,13 +3,13 @@ const width = height = 100; // % of the parent element
 let x = d3.scaleLinear().domain([0, width]).range([0, width]);
 let y = d3.scaleLinear().domain([0, height]).range([0, height]);
     
-let color = d3.scaleOrdinal()
-                .range(d3.schemeDark2
-                    .map((c)=> { 
-                        c = d3.rgb(c); 
-                        return c; 
-                    })
-                );
+// let color = d3.scaleOrdinal()
+//                 .range(d3.schemeDark2
+//                     .map((c)=> { 
+//                         c = d3.rgb(c); 
+//                         return c; 
+//                     })
+//                 );
 
 const treemap = d3.treemap()
         .size([width, height])
@@ -52,10 +52,8 @@ try {
             .style("top", d =>  y(d.y0) + "%")
             .style("width", d =>  x(d.x1) - x(d.x0) + "%")
             .style("height", d =>  y(d.y1) - y(d.y0) + "%")
-            .style("background-color", d => { 
-                                                if(d.depth == 2)  return getColor(d.parent.data.name); 
-                                                else return getColor(d.data.name); 
-                                                return color(d.data.name)})
+            .style("background-color", d => { if(d.depth == 2)  return getColor(d.parent.data.name); 
+                                                else return getColor(d.data.name); })
             .on("click", zoom)
             .append("p")
             .attr("class", "label")
@@ -116,9 +114,6 @@ try {
         };
 
         function getColor (p) {
-    // nh = d3.rgb(0,178,95), 
-    // hanwha = d3.rgb(243,115,33), 
-    // gs = d3.rgb(0,169,157);
             switch(p) {
                 case "삼성" :
                     samsung.r -= 0.2;
@@ -143,7 +138,7 @@ try {
                     return lg;
                 case "포스코" :
                     posco.g -= 0.2;
-                    posco.b -= 1;
+                    posco.b -= 2;
                     return posco;
                 case "농협" :
                     nh.g -= 1;

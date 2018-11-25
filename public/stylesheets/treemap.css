@@ -62,7 +62,7 @@ nav .detail:hover {
   position: absolute;
   background: transparent url("") no-repeat 50%/cover;
   overflow: hidden;
-  opacity: 0.8;
+  /* opacity: 0.8; */
   transition: opacity 0.8s;
   cursor: pointer;
   border : solid 1px rgba(255,255,255,0.4)
@@ -71,7 +71,8 @@ nav .detail:hover {
 .node .label {
   display: inline;
   font-family: sans-serif;
-  color: rgba(255, 255, 255, 0.6);
+  font-weight: bold; 
+  color: rgba(255, 255, 255, 1);
   position: absolute;
   padding: 0;
   margin: 0;

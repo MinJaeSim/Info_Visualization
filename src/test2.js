@@ -2,7 +2,8 @@ function detail(d) {
 try {
     (async function() {
         d3.selectAll(".node").classed("hide",true);
-
+        d3.select(".detail").classed("hide",true);
+        
         if(!d3.select("#chart").select("svg").empty()) {
             d3.select("#chart").select("svg").classed("hide",false);
             return;
@@ -13,39 +14,40 @@ try {
         //     return;
         // }
 
-        const data = await d3.tsv("data/chord.tsv");
+        const data = await d3.tsv("data/samsung.tsv");
 
+        const real = [];
         const matrix = [];
         const name = [];
         const colorRange =[];
         
-        for(i = 0; i < data.length - 1; i++) 
+        for(i = 0; i < data.length - 1; i++) {
             matrix.push([]);
+            real.push([]);
+        }
 
         for(i = 0; i < data.length - 1; i++) 
+            for(j = 1; j < data.length; j++) 
+                matrix[j-1][i] = 0;
+        
+        for(i = 0; i < data.length - 1; i++) 
             for(j = 1; j < data.length; j++) {
-                matrix[j-1][i] = parseFloat(data[i][j]);
+                real[i][j-1] = parseFloat(data[i][j]);
                 matrix[i][j-1] += parseFloat(data[i][j]);
+                if(j-1 == i) 
+                    continue;
+                matrix[j-1][i] += parseFloat(data[i][j]);
                 // matrix[i][j-1] = parseFloat(data[i][j]);
             }
 
         for(i = data.length - 1, j = 1; j < data.length; j++)
             name.push(data[i][j])
-        
-        
-        // for(i = 0; i < matrix.length; i++) {
-        //     let sum = 0;
-        //     console.log("name :" + name[i] + " "+ matrix[i]);
-        //     for(j = 0; j < matrix[i].length; j++)
-        //         sum += matrix[i][j];
-        //     console.log("sum : " + sum);   
-        // }
 
         for(i = 0; i < name.length; i++) 
             colorRange.push(d3.interpolateRainbow(i/name.length));
     
         const margin = {top: 30, right: 20, bottom: 30, left: 50},
-            width = 1024 - margin.left - margin.right,
+            width = 1280 - margin.left - margin.right,
             height = 960 - margin.top - margin.bottom;
         
         d3.select("#chart")
@@ -133,8 +135,22 @@ try {
             .data(chords => chords)
             .enter().append("path")
             .attr("d", ribbon)
-            .style("fill", d => color(d.target.index))
-            .style("stroke", d => d3.rgb(color(d.target.index)).darker());
+            .style("fill", d => { if(real[d.source.index][d.target.index] == d.source.value)
+                                    return color(d.source.index);   
+                                else 
+                                    return color(d.target.index);})
+            .style("stroke", d => { if(real[d.source.index][d.target.index] == d.source.value)
+                                        return d3.rgb(color(d.source.index)).darker();   
+                                    else 
+                                        return d3.rgb(color(d.target.index)).darker();
+                                    });
+
+        for(i = 0; i < matrix.length; i++) {
+            // console.log(matrix[i]);
+            d3.select(".sub")
+                .append("div")
+                .text(name[i]+"\n"+matrix[i]);
+        }
 
         $('.up').click(() => {
             d3.select("svg").classed("hide",true)
