@@ -160,7 +160,7 @@ $('.detail').click(() => {
             case "현대자동차" :
                 detail(company);
                 break;
-            case "SK" : 
+            case "LG" : 
                 detail(company);
                 break;
             default :

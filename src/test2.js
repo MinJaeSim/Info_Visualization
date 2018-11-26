@@ -22,6 +22,10 @@ function detail(d) {
                     chordData = await d3.tsv("data/hyundaiCircos.tsv");
                     subData = await d3.json("data/hyundaiSub.json");
                     break;
+                case "LG" :
+                    chordData = await d3.tsv("data/lgCircos.tsv");
+                    subData = await d3.json("data/lgSub.json");
+                    break;
             }
 
             const tsvMatrix = [];
