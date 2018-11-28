@@ -15,15 +15,20 @@ svg {
 }
 
 .sub {
+  z-index: 100;
+  position: fixed;
+  right : 30px;
+  top : 30px;
   width: 350px;
   height: 650px;
-  border : solid 1px #999999;
   margin: 50px 0px 80px 0px;
+  background : transparent !important;
 }
 
 .sub_title {
   font: 18px sans-serif;
   margin-top: 4px;
+  margin-bottom: 10px;
 }
 
 .sub_text {
@@ -31,12 +36,31 @@ svg {
 }
 
 .sub_sum {
+  margin-top: 5px;
+  margin-bottom: 15px;
   font: 16px sans-serif;
-  font-weight: bold;
+  font-weight: bold;;
 }
 
 .myself {
-  margin-top: 0px;
+  text-align: center;
+  font: 18px sans-serif;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.self_container, .have_container, .hadpp_container, .only_container {
+  border : solid 1px #999999;
+  margin-top: 4px;
+  padding: 4px;
+}
+.outer {
+  width: 100%;
+  display: flex;
+}
+
+.left, .right {
+  width: 45%;
 }
 
 /* .have {
@@ -63,8 +87,8 @@ svg {
 */
 
 @media (max-height: 800px) {
-  body {
+  /* body {
     position: absolute;
     overflow: auto;
-  }
+  } */
 }

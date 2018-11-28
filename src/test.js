@@ -62,6 +62,9 @@ try {
                         .on("click", zoom);
             
         function zoom(d) {
+            // if chord diagram 일때
+            if(!d3.select("#sunburst").select("svg").empty())
+                window.location ='/';
             console.log('clicked: ' + d.data.name + ', depth: ' + d.depth);
             if(d.depth == 0) {
                 company = null;

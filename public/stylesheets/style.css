@@ -11,8 +11,13 @@ a {
 }
 
 #chart {
-  display: inline-flex;
   width: 100%;
+  overflow: hidden;
+}
+
+#sunburst {
+  height : 100vh;
+  overflow-y: scroll;
 }
 
 /* @media (max-width: 1459px) {

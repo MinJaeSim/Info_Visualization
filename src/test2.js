@@ -4,11 +4,6 @@ function detail(d) {
             d3.selectAll(".node").classed("hide",true);
             d3.select(".detail").classed("hide",true);
             
-            if(!d3.select("#chart").select("svg").empty()) {
-                d3.select("#chart").select("svg").classed("hide",false);
-                return;
-            }
-
             console.log(d);
 
             let chordData;
@@ -66,17 +61,17 @@ function detail(d) {
                 width = 1080 - margin.left - margin.right,
                 height = 920 - margin.top - margin.bottom;
             
-            d3.select("#chart")
+            d3.select("#sunburst")
                 .append("svg:svg")    
                 .attr("width", width + "px")
                 .attr("height", height + "px")
                 .attr("margin-right", margin.right + "px")
                 .attr("margin-left", margin.left + "px")
-                .attr("margin-top", margin.top + "px")
+                // .attr("margin-top", margin.top + "px")
                 .attr("margin-bottm", margin.bottom + "px")
                 .attr("float", "left");
 
-            d3.select("#chart")
+            d3.select("#sunburst")
                 .append("div")
                 .attr("class","sub");
 
@@ -184,59 +179,112 @@ function detail(d) {
             function fade(opacity) {
                 return function(g, i) {
                     d3.select(".sub").selectAll("div").remove();
-                    if(opacity == 0.1) {
 
+                    if(opacity == 0.1) {
                         d3.select(".sub")
+                            .append("div")
+                            .attr("class","self_container");
+                    
+                        d3.select(".sub")
+                            .append("div")
+                            .attr("class","have_container");
+                        
+                        d3.select(".sub").select(".have_container")
+                            .append("div")
+                            .attr("class","sub_title")
+                            .text(`${companyName[i]}(이)가 지분을 가지고 있는 계열사`);
+
+                        d3.select(".sub").select(".have_container")
+                            .append("div")
+                            .attr("class","outer have_outer");
+
+                        d3.select(".sub").select(".have_container").select(".have_outer")
+                            .append("div")
+                            .attr("class","left have_left");
+
+                        d3.select(".sub").select(".have_container").select(".have_outer")
+                            .append("div")
+                            .attr("class","right have_right");
+                    
+                        d3.select(".sub")
+                            .append("div")
+                            .attr("class","hadpp_container");
+                        
+                        d3.select(".sub").select(".hadpp_container")
+                            .append("div")
+                            .attr("class","sub_title")
+                            .text(`${companyName[i]}의 지분을 가지고 있는 계열사`);
+                        
+                        d3.select(".sub").select(".hadpp_container")
+                            .append("div")
+                            .attr("class","outer hadpp_outer");
+
+                        d3.select(".sub").select(".hadpp_container").select(".hadpp_outer")
+                            .append("div")
+                            .attr("class","left hadpp_left");
+
+                        d3.select(".sub").select(".hadpp_container").select(".hadpp_outer")
+                            .append("div")
+                            .attr("class","right hadpp_right");
+
+                        d3.select(".sub").select(".self_container")
                                 .append("div")
-                                .attr("class","sub_title myself")
+                                .attr("class","myself")
                                 .text(`자기 지분 : ${tsvMatrix[i][i]}%`);
 
                         d3.select(".sub").select(".myself")
-                            .style("color", colorRange[i])
-                            .attr("margin", 5);
-
-                        d3.select(".sub")
-                                .append("div")
-                                .attr("class","sub_title")
-                                .text(`${companyName[i]}(이)가 지분을 가지고 있는 계열사`);
+                            .style("color", colorRange[i]);
+                        
                         let haveSum = 0;
                         for(j = 0; j < tsvMatrix.length; j++) {
                             if(tsvMatrix[i][j] == 0 || i == j)
                                 continue;
-                            
+                                
                             haveSum += tsvMatrix[i][j];
-
-                            d3.select(".sub")
+                            
+                            d3.select(".sub").select(".have_container").select(".have_outer").select(".have_left")
+                                .append("div")
+                                .attr("class","sub_text have")
+                                .text(`${companyName[j]}`)
+                                .style('color',colorRange[j]);
+                            d3.select(".sub").select(".have_container").select(".have_outer").select(".have_right")
+                                .append("div")
+                                .attr("class","sub_text have")
+                                .text(`${tsvMatrix[i][j]}%`)
+                                .style('color',colorRange[j]);
+                            /*
+                            d3.select(".sub").select(".have_container")
                                 .append("div")
                                 .attr("class","sub_text have")
                                 .text(`${companyName[j]} : ${tsvMatrix[i][j]}%`)
                                 .style('color',colorRange[j]);
+                            */
                         }
-                        d3.select(".sub")
+                        d3.select(".sub").select(".have_container")
                                 .append("div")
                                 .attr("class","sub_sum")
                                 .text(`총 합 : ${Math.round(haveSum)}%`);
-
-                        d3.select(".sub")
-                                .append("div")
-                                .attr("class","sub_title")
-                                .text(`${companyName[i]}의 지분을 가지고 있는 계열사`);
                         
                         let hadppSum =0;
                         for(j = 0; j < tsvMatrix.length; j++) {
                             if(tsvMatrix[j][i] == 0 || i == j)
                                 continue;
-                            
                             hadppSum += tsvMatrix[j][i];
-                            
-                            d3.select(".sub")
+
+                            d3.select(".sub").select(".hadpp_container").select(".hadpp_outer").select(".hadpp_left")
                                 .append("div")
                                 .attr("class","sub_text hadpp")
-                                .text(`${companyName[j]} : ${tsvMatrix[j][i]}%`)
+                                .text(`${companyName[j]}`)
+                                .style("color", colorRange[j]);
+                            
+                            d3.select(".sub").select(".hadpp_container").select(".hadpp_outer").select(".hadpp_right")
+                                .append("div")
+                                .attr("class","sub_text hadpp")
+                                .text(`${tsvMatrix[j][i]}%`)
                                 .style("color", colorRange[j]);
                         }
 
-                        d3.select(".sub")
+                        d3.select(".sub").select(".hadpp_container")
                                 .append("div")
                                 .attr("class","sub_sum")
                                 .text(`총 합 : ${Math.round(hadppSum)}%`);
@@ -245,13 +293,34 @@ function detail(d) {
                             if(companyName[i] == subCompany[j].name) {
                                 d3.select(".sub")
                                     .append("div")
+                                    .attr("class","only_container");
+                                d3.select(".sub").select(".only_container")
+                                    .append("div")
                                     .attr("class","sub_title")
                                     .text(`${companyName[i]}만 지분을 가지고 있는 계열사`);
+
+                                d3.select(".sub").select(".only_container")
+                                    .append("div")
+                                    .attr("class","outer only_outer");
+        
+                                d3.select(".sub").select(".only_container").select(".only_outer")
+                                    .append("div")
+                                    .attr("class","left only_left");
+        
+                                d3.select(".sub").select(".only_container").select(".only_outer")
+                                    .append("div")
+                                    .attr("class","right only_right");
+                                
                                 for(k = 0; k < subCompany[j].children.length; k++) {
-                                    d3.select(".sub")
+                                    d3.select(".sub").select(".only_container").select(".only_outer").select(".only_left")
                                         .append("div")
                                         .attr("class","sub_text onlyhave")
-                                        .text(`${subCompany[j].children[k].name} : ${subCompany[j].children[k].value}%`)
+                                        .text(`${subCompany[j].children[k].name}`);
+                                    
+                                    d3.select(".sub").select(".only_container").select(".only_outer").select(".only_right")
+                                        .append("div")
+                                        .attr("class","sub_text onlyhave")
+                                        .text(`${subCompany[j].children[k].value}%`);
                                 }
                                 break;
                             }
