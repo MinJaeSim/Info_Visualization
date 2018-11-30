@@ -66,12 +66,12 @@ function detail(d) {
                 .attr("width", width + "px")
                 .attr("height", height + "px")
                 .attr("margin-right", margin.right + "px")
-                .attr("margin-left", margin.left + "px")
+                // .attr("margin-left", margin.left + "px")
                 // .attr("margin-top", margin.top + "px")
                 .attr("margin-bottm", margin.bottom + "px")
                 .attr("float", "left");
 
-            d3.select("#sunburst")
+            d3.select("body")
                 .append("div")
                 .attr("class","sub");
 

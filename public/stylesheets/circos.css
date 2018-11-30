@@ -17,12 +17,10 @@ svg {
 .sub {
   z-index: 100;
   position: fixed;
-  right : 30px;
+  right : 80px;
   top : 30px;
-  width: 350px;
-  height: 650px;
+  width: 300px;
   margin: 50px 0px 80px 0px;
-  background : transparent !important;
 }
 
 .sub_title {
