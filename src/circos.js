@@ -1,3 +1,5 @@
+let currentGroup = -1;
+
 function detail(d) { 
     try {
         (async function() {
@@ -71,7 +73,7 @@ function detail(d) {
                 .attr("margin-bottm", margin.bottom + "px")
                 .attr("float", "left");
 
-            d3.select("body")
+            d3.select("#sunburst")
                 .append("div")
                 .attr("class","sub");
 
@@ -123,8 +125,8 @@ function detail(d) {
                 .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
                 .text(d => companyName[d.index]);
 
-            group.on("mouseover", fade(.1))
-                .on("mouseout", fade(1));
+            group.on("click", fade(.1));
+                // .on("mouseout", fade(1));
             
             const groupTick = group.selectAll(".group-tick")
                 .data(d => groupTicks(d, 20))
@@ -178,6 +180,24 @@ function detail(d) {
 
             function fade(opacity) {
                 return function(g, i) {
+
+                    if(i == currentGroup) {
+                        svg.selectAll(".ribbons path")
+                        .transition()
+                        .style("opacity", 1);
+                        
+                        d3.select(".sub").selectAll("div").remove();    
+                        
+                        currentGroup = -1;                        
+                        
+                        return;
+                    }
+                    
+                    currentGroup = i;
+                    svg.selectAll(".ribbons path")
+                        .transition()
+                        .style("opacity", 1);
+
                     d3.select(".sub").selectAll("div").remove();
 
                     if(opacity == 0.1) {
@@ -194,18 +214,12 @@ function detail(d) {
                             .attr("class","sub_title")
                             .text(`${companyName[i]}(이)가 지분을 가지고 있는 계열사`);
 
-                        d3.select(".sub").select(".have_container")
-                            .append("div")
-                            .attr("class","outer have_outer");
-
-                        d3.select(".sub").select(".have_container").select(".have_outer")
-                            .append("div")
-                            .attr("class","left have_left");
-
-                        d3.select(".sub").select(".have_container").select(".have_outer")
-                            .append("div")
-                            .attr("class","right have_right");
-                    
+                        d3.select(".sub").select(".have_container").append("table").attr("class","mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp");
+                        d3.select(".sub").select(".have_container").select("table").append("thead");
+                        d3.select(".sub").select(".have_container").select("table").select("thead").append("th").attr("class","mdl-data-table__cell--non-numeric").text("계열사");
+                        d3.select(".sub").select(".have_container").select("table").select("thead").append("th").text("지분율(%)");
+                        d3.select(".sub").select(".have_container").select("table").append("tbody");
+                        
                         d3.select(".sub")
                             .append("div")
                             .attr("class","hadpp_container");
@@ -214,18 +228,12 @@ function detail(d) {
                             .append("div")
                             .attr("class","sub_title")
                             .text(`${companyName[i]}의 지분을 가지고 있는 계열사`);
-                        
-                        d3.select(".sub").select(".hadpp_container")
-                            .append("div")
-                            .attr("class","outer hadpp_outer");
 
-                        d3.select(".sub").select(".hadpp_container").select(".hadpp_outer")
-                            .append("div")
-                            .attr("class","left hadpp_left");
-
-                        d3.select(".sub").select(".hadpp_container").select(".hadpp_outer")
-                            .append("div")
-                            .attr("class","right hadpp_right");
+                        d3.select(".sub").select(".hadpp_container").append("table").attr("class","mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp");
+                        d3.select(".sub").select(".hadpp_container").select("table").append("thead");
+                        d3.select(".sub").select(".hadpp_container").select("table").select("thead").append("th").attr("class","mdl-data-table__cell--non-numeric").text("계열사");
+                        d3.select(".sub").select(".hadpp_container").select("table").select("thead").append("th").text("지분율(%)");
+                        d3.select(".sub").select(".hadpp_container").select("table").append("tbody");
 
                         d3.select(".sub").select(".self_container")
                                 .append("div")
@@ -242,28 +250,21 @@ function detail(d) {
                                 
                             haveSum += tsvMatrix[i][j];
                             
-                            d3.select(".sub").select(".have_container").select(".have_outer").select(".have_left")
-                                .append("div")
-                                .attr("class","sub_text have")
-                                .text(`${companyName[j]}`)
-                                .style('color',colorRange[j]);
-                            d3.select(".sub").select(".have_container").select(".have_outer").select(".have_right")
-                                .append("div")
-                                .attr("class","sub_text have")
-                                .text(`${tsvMatrix[i][j]}%`)
-                                .style('color',colorRange[j]);
-                            /*
-                            d3.select(".sub").select(".have_container")
-                                .append("div")
-                                .attr("class","sub_text have")
-                                .text(`${companyName[j]} : ${tsvMatrix[i][j]}%`)
-                                .style('color',colorRange[j]);
-                            */
+                            d3.select(".sub").select(".have_container").select("table").select("tbody").append("tr").attr("class",`_${j}tr`);
+                            d3.select(".sub").select(".have_container").select("table").select("tbody").select(`._${j}tr`)
+                                .append("td").attr("class","mdl-data-table__cell--non-numeric")
+                                .text(`${companyName[j]}`);
+                            d3.select(".sub").select(".have_container").select("table").select("tbody").select(`._${j}tr`)
+                                .append("td")
+                                .text(`${tsvMatrix[i][j]}`);
                         }
-                        d3.select(".sub").select(".have_container")
-                                .append("div")
-                                .attr("class","sub_sum")
-                                .text(`총 합 : ${Math.round(haveSum)}%`);
+                        d3.select(".sub").select(".have_container").select("table").select("tbody").append("tr").attr("class",`_sumtr`);
+                        d3.select(".sub").select(".have_container").select("table").select("tbody").select(`._sumtr`)
+                            .append("td").attr("class","mdl-data-table__cell--non-numeric")
+                            .text("총합");
+                        d3.select(".sub").select(".have_container").select("table").select("tbody").select(`._sumtr`)
+                            .append("td")
+                            .text(`${Math.round(haveSum)}`);
                         
                         let hadppSum =0;
                         for(j = 0; j < tsvMatrix.length; j++) {
@@ -271,23 +272,22 @@ function detail(d) {
                                 continue;
                             hadppSum += tsvMatrix[j][i];
 
-                            d3.select(".sub").select(".hadpp_container").select(".hadpp_outer").select(".hadpp_left")
-                                .append("div")
-                                .attr("class","sub_text hadpp")
-                                .text(`${companyName[j]}`)
-                                .style("color", colorRange[j]);
-                            
-                            d3.select(".sub").select(".hadpp_container").select(".hadpp_outer").select(".hadpp_right")
-                                .append("div")
-                                .attr("class","sub_text hadpp")
-                                .text(`${tsvMatrix[j][i]}%`)
-                                .style("color", colorRange[j]);
+                            d3.select(".sub").select(".hadpp_container").select("table").select("tbody").append("tr").attr("class",`_${j}tr`);
+                            d3.select(".sub").select(".hadpp_container").select("table").select("tbody").select(`._${j}tr`)
+                                .append("td").attr("class","mdl-data-table__cell--non-numeric")
+                                .text(`${companyName[j]}`);
+                            d3.select(".sub").select(".hadpp_container").select("table").select("tbody").select(`._${j}tr`)
+                                .append("td")
+                                .text(`${tsvMatrix[j][i]}`);
                         }
 
-                        d3.select(".sub").select(".hadpp_container")
-                                .append("div")
-                                .attr("class","sub_sum")
-                                .text(`총 합 : ${Math.round(hadppSum)}%`);
+                        d3.select(".sub").select(".hadpp_container").select("table").select("tbody").append("tr").attr("class",`_sumtr`);
+                        d3.select(".sub").select(".hadpp_container").select("table").select("tbody").select(`._sumtr`)
+                            .append("td").attr("class","mdl-data-table__cell--non-numeric")
+                            .text("총합");
+                        d3.select(".sub").select(".hadpp_container").select("table").select("tbody").select(`._sumtr`)
+                            .append("td")
+                            .text(`${Math.round(hadppSum)}`);
                         
                         for(j = 0; j < subCompany.length; j++)
                             if(companyName[i] == subCompany[j].name) {
@@ -299,27 +299,19 @@ function detail(d) {
                                     .attr("class","sub_title")
                                     .text(`${companyName[i]}만 지분을 가지고 있는 계열사`);
 
-                                d3.select(".sub").select(".only_container")
-                                    .append("div")
-                                    .attr("class","outer only_outer");
-        
-                                d3.select(".sub").select(".only_container").select(".only_outer")
-                                    .append("div")
-                                    .attr("class","left only_left");
-        
-                                d3.select(".sub").select(".only_container").select(".only_outer")
-                                    .append("div")
-                                    .attr("class","right only_right");
+                                d3.select(".sub").select(".only_container").append("table").attr("class","mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp");
+                                d3.select(".sub").select(".only_container").select("table").append("thead");
+                                d3.select(".sub").select(".only_container").select("table").select("thead").append("th").attr("class","mdl-data-table__cell--non-numeric").text("계열사");
+                                d3.select(".sub").select(".only_container").select("table").select("thead").append("th").text("지분율(%)");
+                                d3.select(".sub").select(".only_container").select("table").append("tbody");
                                 
                                 for(k = 0; k < subCompany[j].children.length; k++) {
-                                    d3.select(".sub").select(".only_container").select(".only_outer").select(".only_left")
-                                        .append("div")
-                                        .attr("class","sub_text onlyhave")
+                                    d3.select(".sub").select(".only_container").select("table").select("tbody").append("tr").attr("class",`_${k}tr`);
+                                    d3.select(".sub").select(".only_container").select("table").select("tbody").select(`._${k}tr`)
+                                        .append("td").attr("class","mdl-data-table__cell--non-numeric")
                                         .text(`${subCompany[j].children[k].name}`);
-                                    
-                                    d3.select(".sub").select(".only_container").select(".only_outer").select(".only_right")
-                                        .append("div")
-                                        .attr("class","sub_text onlyhave")
+                                    d3.select(".sub").select(".only_container").select("table").select("tbody").select(`._${k}tr`)
+                                        .append("td")
                                         .text(`${subCompany[j].children[k].value}%`);
                                 }
                                 break;
