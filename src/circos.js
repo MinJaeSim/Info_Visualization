@@ -5,8 +5,6 @@ function detail(d) {
         (async function() {
             d3.selectAll(".node").classed("hide",true);
             d3.select(".detail").classed("hide",true);
-            
-            console.log(d);
 
             let chordData;
             let subData;
@@ -54,7 +52,7 @@ function detail(d) {
                 }
 
             for(i = chordData.length - 1, j = 1; j < chordData.length; j++)
-                companyName.push(chordData[i][j])
+                companyName.push(chordData[i][j]);
 
             for(i = 0; i < companyName.length; i++) 
                 colorRange.push(d3.interpolateRainbow(i/companyName.length));
@@ -62,14 +60,12 @@ function detail(d) {
             const margin = {top: 30, right: 30, bottom: 30, left: 30},
                 width = 1080 - margin.left - margin.right,
                 height = 920 - margin.top - margin.bottom;
-            
+
             d3.select("#sunburst")
                 .append("svg:svg")    
                 .attr("width", width + "px")
                 .attr("height", height + "px")
                 .attr("margin-right", margin.right + "px")
-                // .attr("margin-left", margin.left + "px")
-                // .attr("margin-top", margin.top + "px")
                 .attr("margin-bottm", margin.bottom + "px")
                 .attr("float", "left");
 
@@ -115,21 +111,21 @@ function detail(d) {
                 .attr("d", arc);
             
             group.append("svg:text")
-                .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
+                .each(d => {d.angle = (d.startAngle+d.endAngle) / 2})
                 .attr("dy", ".35em")
                 .attr("transform", d => `
                 rotate(${(d.angle * 180 / Math.PI - 90)})
-                translate(${outerRadius + 30})
+                translate(${outerRadius + 40})
                 ${d.angle > Math.PI ? "rotate(180)" : ""}
                 `)
                 .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-                .text(d => companyName[d.index]);
+                .text(d => companyName[d.index])
+                .style("font-weight","800");
 
             group.on("click", fade(.1));
-                // .on("mouseout", fade(1));
             
             const groupTick = group.selectAll(".group-tick")
-                .data(d => groupTicks(d, 20))
+                .data(d => groupTicks(d))
                 .enter().append("g")
                 .attr("class", "group-tick")
                 .attr("transform", d => "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)");
@@ -144,7 +140,8 @@ function detail(d) {
                 .attr("dy", ".35em")
                 .attr("transform", d => d.angle > Math.PI ? "rotate(180) translate(-12)" : null)
                 .style("text-anchor", d => d.angle > Math.PI ? "end" : null)
-                .text(d => formatValue(d.value) + "%");
+                .text(d => formatValue(d.value) + "%")
+                .attr("font-size","8px");
             
             g.append("g")
                 .attr("class", "ribbons")
@@ -166,14 +163,29 @@ function detail(d) {
                 d3.select("svg").classed("hide",true)
             });
             
-            function groupTicks(d, step) {
+            function groupTicks(d) {
+                let max = d.value+1;
                 let k;
                 if (d.value == 0) {
                     k = (d.endAngle - d.startAngle);
                 } else {
-                    k = (d.endAngle - d.startAngle) / d.value;
+                    k = (d.endAngle - d.startAngle) / (d.value);
                 }
-                return d3.range(0, d.value, step).map(function(value) {
+
+                let step;
+                const num = parseFloat(d.value);
+                if (200 <= num)
+                    step = 50;
+                else if (100 <= num && num < 200)
+                    step = 30;
+                else
+                    step = 25;
+                
+                return d3.range(0, max, step).map(function(value) {
+
+                    if(value + step > max) {
+                        return {value: Math.floor(max-1), angle: d.endAngle};    
+                    }
                     return {value: value, angle: value * k + d.startAngle};
                 });
             }
