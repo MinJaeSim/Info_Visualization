@@ -49,7 +49,21 @@ try {
             .append("p")
             .attr("class", "label")
             .text(d => d.data.name ? Math.round(d.data.value/100) < 10000 ? `${d.data.name} \n ${Math.round(d.data.value/100)} 억` : `${d.data.name} \n ${Math.round(d.value/1000000)} 조` : "---")
-            .style("font-size", d => (y(d.y1) - y(d.y0))  +"px")
+            .style("font-size", d =>{ 
+                // console.log(y(d.y1) - y(d.y0)); if((y(d.y1) - y(d.y0)) <=0) return "15px"; return (y(d.y1) - y(d.y0))  +"px"
+                if(d.depth == 1){
+                    console.log(Math.round(d.value/1000000));
+                    if(Math.round(d.value/1000000) > 50)
+                        return (Math.round(d.value/10000000) + 40)+ "px";
+                    return Math.round(d.value/1000000) + "px";
+                }
+                let data = Math.round(d.data.value/1000000);
+                if (data > 30)
+                    data = 30;
+                else if(data < 3)
+                    data = 3;
+                return data + "px";
+            })
             .style("overflow", "hidden")
             .style("text-overflow","ellipsis")
             .style("white-space","nowrap");  
